@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}500 - {% trans "Internal Server Error" %} — Ezzat Store{% endblock %}
+
+{% block extra_css %}
+.error-page {
+  padding: 80px 20px 120px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+.error-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 60px 40px;
+  max-width: 540px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+}
+.error-icon {
+  font-size: 64px;
+  color: var(--danger);
+  margin-bottom: 16px;
+  opacity: 0.8;
+}
+.error-code {
+  font-family: 'Syne', sans-serif;
+  font-size: 110px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--danger);
+  margin-bottom: 10px;
+}
+.error-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--txt);
+  margin-bottom: 14px;
+}
+.error-desc {
+  font-size: 15px;
+  color: var(--txt-2);
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+.error-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+@media (max-width: 480px) {
+  .error-card { padding: 40px 20px; }
+  .error-code { font-size: 80px; }
+  .error-actions { flex-direction: column; width: 100%; }
+  .error-actions .btn { width: 100%; justify-content: center; }
+}
+{% endblock %}
+
+{% block content %}
+<div class="error-page">
+  <div class="error-card">
+    <div class="error-icon">
+      <i class="fas fa-server"></i>
+    </div>
+    <div class="error-code">500</div>
+    <h1 class="error-title">{% trans "Internal Server Error" %}</h1>
+    <p class="error-desc">
+      {% trans "Something went wrong on our end. Our technical team has been notified. Please try refreshing the page or come back later." %}
+    </p>
+    <div class="error-actions">
+      <button onclick="window.location.reload();" class="btn btn-primary">
+        <i class="fas fa-rotate-right"></i> {% trans "Refresh Page" %}
+      </button>
+      <a href="{% url 'profile' %}" class="btn btn-outline">
+        <i class="fas fa-home"></i> {% trans "Back to Profile" %}
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}Create Account — Ezzat Store{% endblock %}
+
+{% block extra_css %}
+.auth-page {
+  min-height: calc(100vh - 120px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 20px;
+}
+.auth-box {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  width: 100%; max-width: 440px;
+  overflow: hidden;
+}
+.auth-box-head {
+  padding: 28px 28px 0;
+  text-align: center;
+}
+.auth-logo {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: var(--accent); color: #fff;
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+}
+.auth-box-head h1 {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: 22px; color: var(--txt); margin-bottom: 6px;
+}
+.auth-box-head p { font-size: 13px; color: var(--txt-2); margin-bottom: 0; }
+
+.auth-box-body { padding: 24px 28px; }
+
+/* Styled form.as_p */
+.styled-form p {
+  display: flex; flex-direction: column; margin-bottom: 14px;
+}
+.styled-form p:last-of-type { margin-bottom: 0; }
+.styled-form label {
+  font-size: 12px; font-weight: 600;
+  color: var(--txt-2); margin-bottom: 6px; letter-spacing: 0.3px;
+}
+.styled-form input[type="text"],
+.styled-form input[type="email"],
+.styled-form input[type="password"],
+.styled-form input[type="tel"],
+.styled-form select {
+  background: var(--bg-3); border: 1.5px solid var(--border);
+  border-radius: var(--r); padding: 10px 14px;
+  font-size: 14px; font-family: inherit; color: var(--txt);
+  outline: none; transition: border-color var(--ease), box-shadow var(--ease); width: 100%;
+}
+.styled-form input:focus, .styled-form select:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg);
+}
+.styled-form input::placeholder { color: var(--txt-3); }
+.styled-form ul.errorlist { list-style: none; margin: 5px 0 0; }
+.styled-form ul.errorlist li {
+  font-size: 12px; color: var(--danger);
+  display: flex; align-items: center; gap: 5px;
+}
+.styled-form ul.errorlist li::before {
+  content: '\f06a'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 11px;
+}
+.styled-form span.helptext { font-size: 11px; color: var(--txt-3); margin-top: 4px; line-height: 1.5; }
+
+.auth-submit {
+  margin-top: 20px;
+}
+.auth-submit button {
+  width: 100%; padding: 13px; border: none; border-radius: var(--r);
+  background: var(--accent); color: #fff;
+  font-size: 15px; font-weight: 700; font-family: inherit;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all var(--ease);
+}
+.auth-submit button:hover { filter: brightness(1.1); box-shadow: 0 0 24px var(--accent-glow); transform: translateY(-1px); }
+
+.auth-box-foot {
+  padding: 16px 28px 24px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+.auth-box-foot p { font-size: 13px; color: var(--txt-2); }
+.auth-box-foot a { color: var(--accent); font-weight: 600; transition: color var(--ease); }
+.auth-box-foot a:hover { color: var(--txt); }
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+  <div class="auth-box">
+
+    <div class="auth-box-head">
+      <div class="auth-logo">E</div>
+      <h1>Create Account</h1>
+      <p>Join Ezzat Store and start shopping</p>
+    </div>
+
+    <div class="auth-box-body">
+      <form method="post" class="styled-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="auth-submit">
+          <button type="submit">
+            <i class="fas fa-user-plus"></i> Sign Up
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="auth-box-foot">
+      <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

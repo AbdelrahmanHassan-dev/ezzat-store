@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Search" %}{% if query %} — {{ query }}{% endif %} — {% trans "Ezzat Store" %}{% endblock %}
+
+{% block extra_css %}
+.search-page { padding: 36px 0 64px; }
+
+.search-header { margin-bottom: 32px; }
+.search-hero {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 32px 28px;
+  margin-bottom: 28px;
+}
+.search-hero h1 {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: clamp(20px, 3.5vw, 28px);
+  color: var(--txt); margin-bottom: 18px;
+}
+.search-hero h1 em { color: var(--accent); font-style: normal; }
+
+.search-form {
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+}
+.search-input-wrap {
+  flex: 1; min-width: 200px;
+  display: flex; align-items: center;
+  background: var(--bg-3); border: 1.5px solid var(--border);
+  border-radius: 99px; padding: 0 16px; gap: 10px;
+  transition: border-color var(--ease), box-shadow var(--ease);
+}
+.search-input-wrap:focus-within {
+  border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg);
+}
+.search-input-wrap i { color: var(--txt-3); font-size: 14px; }
+.search-input {
+  flex: 1; background: none; border: none; outline: none;
+  padding: 11px 0; font-size: 15px; font-family: inherit; color: var(--txt);
+}
+.search-input::placeholder { color: var(--txt-3); }
+.search-submit {
+  padding: 11px 24px; background: var(--accent); color: #fff;
+  border: none; border-radius: 99px;
+  font-size: 14px; font-weight: 700; font-family: inherit;
+  cursor: pointer; display: flex; align-items: center; gap: 7px;
+  transition: all var(--ease); flex-shrink: 0;
+}
+.search-submit:hover { filter: brightness(1.1); box-shadow: 0 0 20px var(--accent-glow); }
+
+/* results meta */
+.results-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; margin-bottom: 20px;
+}
+.results-count { font-size: 14px; color: var(--txt-2); }
+.results-count strong { color: var(--txt); }
+
+/* reuse same grid from all_products */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+.product-card {
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: border-color var(--ease), transform var(--ease), box-shadow var(--ease);
+  color: inherit;
+}
+.product-card:hover {
+  border-color: var(--accent); transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.2);
+}
+.card-img {
+  position: relative; width: 100%; aspect-ratio: 4/3;
+  background: var(--bg-3); overflow: hidden; flex-shrink: 0;
+}
+.card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.product-card:hover .card-img img { transform: scale(1.05); }
+.card-img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; color: var(--txt-3);
+}
+.card-img-placeholder i { font-size: 28px; }
+.card-badge {
+  position: absolute; top: 10px; left: 10px;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 99px;
+  font-size: 10px; font-weight: 700;
+  backdrop-filter: blur(6px);
+}
+.badge-avail   { background: rgba(34,197,94,0.15); color: var(--success); border: 1px solid rgba(34,197,94,0.3); }
+.badge-unavail { background: rgba(239,68,68,0.15);  color: var(--danger);  border: 1px solid rgba(239,68,68,0.3); }
+.card-body { padding: 14px; flex: 1; display: flex; flex-direction: column; }
+.card-name {
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
+  color: var(--txt); margin-bottom: 5px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.card-desc {
+  font-size: 12px; color: var(--txt-2); line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  margin-bottom: 12px;
+}
+.card-meta { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; }
+.card-price { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; color: var(--accent); }
+.card-price .currency { font-size: 11px; font-weight: 600; color: var(--txt-2); margin-left: 2px; }
+.card-footer {
+  padding: 10px 14px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-date { font-size: 11px; color: var(--txt-3); display: flex; align-items: center; gap: 5px; }
+.card-view-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 10px; border-radius: 7px;
+  background: var(--accent-bg); color: var(--accent);
+  font-size: 11px; font-weight: 600; border: 1px solid var(--accent);
+  transition: all var(--ease);
+}
+.card-view-btn:hover { background: var(--accent); color: #fff; }
+
+/* empty / initial states */
+.state-box {
+  text-align: center; padding: 72px 20px;
+  grid-column: 1 / -1;
+}
+.state-box .state-ico {
+  font-size: 48px; color: var(--txt-3);
+  margin-bottom: 16px; display: block;
+}
+.state-box h3 {
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: 20px; margin-bottom: 8px;
+}
+.state-box p { font-size: 14px; color: var(--txt-2); }
+.state-box .state-hint {
+  margin-top: 20px; display: flex; flex-wrap: wrap;
+  gap: 8px; justify-content: center;
+}
+.hint-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 12px; border-radius: 99px;
+  background: var(--bg-3); border: 1px solid var(--border);
+  font-size: 12px; color: var(--txt-2); cursor: pointer;
+  transition: all var(--ease);
+}
+.hint-tag:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+
+@media (max-width: 600px) {
+  .products-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+}
+{% endblock %}
+
+{% block content %}
+<div class="search-page">
+  <div class="container">
+
+    <div class="search-header">
+      <div class="search-hero">
+        <h1>
+          {% if query %}
+            {% blocktranslate %}Results for <em>"{{ query }}"</em>{% endblocktranslate %}
+          {% else %}
+            {% trans "Search Products" %}
+          {% endif %}
+        </h1>
+        <form method="get" class="search-form">
+          <div class="search-input-wrap">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              name="product"
+              class="search-input"
+              placeholder="{% trans 'Phones, cables, earbuds, power banks…' %}"
+              value="{{ query|default:'' }}"
+              autofocus
+            />
+          </div>
+          <button type="submit" class="search-submit">
+            <i class="fas fa-search"></i> {% trans "Search" %}
+          </button>
+        </form>
+      </div>
+
+      {% if products %}
+        <div class="results-meta">
+          <p class="results-count">
+            {% blocktranslate with count=products|length %}Found <strong>{{ count }}</strong> result{{ count|pluralize }} for <strong>"{{ query }}"</strong>{% endblocktranslate %}
+          </p>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="products-grid">
+
+      {% if products %}
+        {% for product in products %}
+          <article class="product-card">
+            <a href="{% url 'product_details' id=product.id %}" class="card-img" tabindex="-1">
+              {% with images=product.image.all %}
+                {% if images %}
+                  <img src="{{ images.0.image.url }}" alt="{{ product.name_product }}" loading="lazy" />
+                {% else %}
+                  <div class="card-img-placeholder"><i class="fas fa-image"></i></div>
+                {% endif %}
+              {% endwith %}
+              {% if product.is_available %}
+                <span class="card-badge badge-avail"><i class="fas fa-circle" style="font-size:6px;"></i> {% trans "In Stock" %}</span>
+              {% else %}
+                <span class="card-badge badge-unavail"><i class="fas fa-circle" style="font-size:6px;"></i> {% trans "Out of Stock" %}</span>
+              {% endif %}
+            </a>
+            <div class="card-body">
+              <a href="{% url 'product_details' id=product.id %}"><h2 class="card-name">{{ product.name_product }}</h2></a>
+              <p class="card-desc">{{ product.description }}</p>
+              <div class="card-meta">
+                <div class="card-price">{{ product.price }}<span class="currency">{% trans "EGP" %}</span></div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <span class="card-date"><i class="fas fa-calendar-days"></i> {{ product.date_adding }}</span>
+              <a href="{% url 'product_details' id=product.id %}" class="card-view-btn">{% trans "View" %} <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </article>
+        {% endfor %}
+
+      {% elif query %}
+        <div class="state-box">
+          <i class="fas fa-magnifying-glass state-ico"></i>
+          <h3>{% blocktranslate %}No results for "{{ query }}"{% endblocktranslate %}</h3>
+          <p>{% trans "We couldn't find anything matching your search. Try a different keyword." %}</p>
+          <div class="state-hint">
+            <span class="hint-tag" onclick="document.querySelector('.search-input').value='cable';document.querySelector('.search-form').submit()"><i class="fas fa-plug"></i> {% trans "Cable" %}</span>
+            <span class="hint-tag" onclick="document.querySelector('.search-input').value='phone';document.querySelector('.search-form').submit()"><i class="fas fa-mobile-screen"></i> {% trans "Phone" %}</span>
+            <span class="hint-tag" onclick="document.querySelector('.search-input').value='earbuds';document.querySelector('.search-form').submit()"><i class="fas fa-headphones"></i> {% trans "Earbuds" %}</span>
+            <span class="hint-tag" onclick="document.querySelector('.search-input').value='powerbank';document.querySelector('.search-form').submit()"><i class="fas fa-battery-full"></i> {% trans "Power Bank" %}</span>
+          </div>
+        </div>
+
+      {% else %}
+        <div class="state-box">
+          <i class="fas fa-search state-ico"></i>
+          <h3>{% trans "What are you looking for?" %}</h3>
+          <p>{% trans "Search through our collection of phones, accessories, cables, and more." %}</p>
+          <div class="state-hint">
+            <span class="hint-tag" onclick="document.querySelector('.search-input').value='cable';document.querySelector('.search-form').submit()"><i class="fas fa-plug"></i> {% trans "Cable" %}</span>
+            <span class="hint-tag" onclick="document.querySelector('.search-input').value='phone';document.querySelector('.search-form').submit()"><i class="fas fa-mobile-screen"></i> {% trans "Phone" %}</span>
+            <span class="hint-tag" onclick="document.querySelector('.search-input').value='earbuds';document.querySelector('.search-form').submit()"><i class="fas fa-headphones"></i> {% trans "Earbuds" %}</span>
+            <span class="hint-tag" onclick="document.querySelector('.search-input').value='powerbank';document.querySelector('.search-form').submit()"><i class="fas fa-battery-full"></i> {% trans "Power Bank" %}</span>
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

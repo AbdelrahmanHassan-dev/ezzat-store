@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "My Profile — Ezzat Store" %}{% endblock %}
+
+{% block extra_css %}
+.profile-page { padding: 36px 0 64px; }
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── LEFT: user card ── */
+.user-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  position: sticky;
+  top: 80px;
+}
+.user-card-top {
+  background: linear-gradient(135deg, var(--accent) 0%, #2d5cff 100%);
+  padding: 28px 20px 20px;
+  text-align: center;
+}
+.user-avatar-big {
+  width: 72px; height: 72px; border-radius: 18px;
+  background: rgba(255,255,255,0.2);
+  border: 3px solid rgba(255,255,255,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: 28px; color: #fff;
+  margin: 0 auto 12px;
+}
+.user-card-name {
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: 17px; color: #fff; margin-bottom: 3px;
+}
+.user-card-email { font-size: 12px; color: rgba(255,255,255,0.7); }
+
+.user-card-body { padding: 16px; }
+.user-info-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.user-info-row:last-child { border-bottom: none; }
+.user-info-row i { width: 16px; text-align: center; color: var(--accent); font-size: 13px; }
+.user-info-row .info-label { color: var(--txt-3); flex-shrink: 0; }
+.user-info-row .info-val { color: var(--txt); font-weight: 500; margin-left: auto; text-align: right; word-break: break-all; }
+
+.user-card-footer { padding: 14px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+.user-card-footer a, .user-card-footer form { flex: 1; }
+.user-card-footer button, .user-card-footer a { width: 100%; }
+
+/* ── RIGHT: orders ── */
+.orders-section {}
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px; gap: 12px;
+}
+.section-head h2 {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: 19px; color: var(--txt);
+  display: flex; align-items: center; gap: 8px;
+}
+.section-head h2 i { color: var(--accent); font-size: 17px; }
+.order-total-badge {
+  padding: 4px 12px; border-radius: 99px;
+  background: var(--accent-bg); color: var(--accent);
+  border: 1px solid var(--accent);
+  font-size: 12px; font-weight: 700;
+}
+
+.orders-list { display: flex; flex-direction: column; gap: 14px; }
+
+.order-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: border-color var(--ease), box-shadow var(--ease);
+}
+.order-card:hover { border-color: var(--border-2); box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+
+.order-card-top {
+  padding: 16px 18px;
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+.order-product-img {
+  width: 56px; height: 56px; border-radius: var(--r);
+  background: var(--bg-3); overflow: hidden; flex-shrink: 0;
+}
+.order-product-img img { width: 100%; height: 100%; object-fit: cover; }
+.order-product-img-ph {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--txt-3); font-size: 20px;
+}
+.order-info { flex: 1; min-width: 0; }
+.order-product-name {
+  font-weight: 700; font-size: 14px; color: var(--txt);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+.order-meta { display: flex; gap: 10px; flex-wrap: wrap; }
+.order-meta span { font-size: 12px; color: var(--txt-3); display: flex; align-items: center; gap: 4px; }
+.order-meta strong { color: var(--txt-2); }
+
+.order-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.order-price {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: 17px; color: var(--accent); white-space: nowrap;
+}
+.order-price span { font-size: 11px; font-weight: 600; color: var(--txt-3); margin-left: 2px; }
+
+/* status badge */
+.status-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 99px;
+  font-size: 11px; font-weight: 700; white-space: nowrap;
+}
+.status-PENDING   { background: rgba(245,158,11,0.12);  color: var(--warning); border: 1px solid rgba(245,158,11,0.3); }
+.status-APPROVED  { background: rgba(34,197,94,0.12);   color: var(--success); border: 1px solid rgba(34,197,94,0.3); }
+.status-COMPLETED { background: rgba(79,124,255,0.12);  color: var(--accent);  border: 1px solid rgba(79,124,255,0.3); }
+.status-CANCELLED { background: rgba(239,68,68,0.12);   color: var(--danger);  border: 1px solid rgba(239,68,68,0.3); }
+.status-REJECTED  { background: rgba(239,68,68,0.12);   color: var(--danger);  border: 1px solid rgba(239,68,68,0.3); }
+
+.order-card-footer {
+  padding: 10px 18px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-3);
+  display: flex; justify-content: flex-end;
+}
+.cancel-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: var(--r);
+  background: rgba(239,68,68,0.08); color: var(--danger);
+  border: 1px solid rgba(239,68,68,0.25);
+  font-size: 12px; font-weight: 600; font-family: inherit;
+  cursor: pointer; transition: all var(--ease);
+}
+.cancel-btn:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+.cancel-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* empty */
+.empty-orders {
+  text-align: center; padding: 56px 20px;
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+.empty-orders i { font-size: 40px; color: var(--txt-3); display: block; margin-bottom: 14px; }
+.empty-orders h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px; margin-bottom: 6px; }
+.empty-orders p { font-size: 13px; color: var(--txt-2); margin-bottom: 18px; }
+
+@media (max-width: 860px) {
+  .profile-grid { grid-template-columns: 1fr; }
+  .user-card { position: static; }
+}
+@media (max-width: 480px) {
+  .order-card-top { gap: 10px; }
+  .order-right { flex-direction: column; align-items: flex-end; gap: 6px; }
+}
+{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+  <div class="container">
+    <div class="profile-grid">
+
+      <aside>
+        <div class="user-card">
+          <div class="user-card-top">
+            <div class="user-avatar-big">{{ user.username|first|upper }}</div>
+            <div class="user-card-name">{{ user.get_full_name|default:user.username }}</div>
+            <div class="user-card-email">{{ user.email }}</div>
+          </div>
+          <div class="user-card-body">
+            <div class="user-info-row">
+              <i class="fas fa-user"></i>
+              <span class="info-label">{% trans "Username" %}</span>
+              <span class="info-val">{{ user.username }}</span>
+            </div>
+            <div class="user-info-row">
+              <i class="fas fa-phone"></i>
+              <span class="info-label">{% trans "Phone" %}</span>
+              <span class="info-val">{{ user.phone_number }}</span>
+            </div>
+            {% if user.phone_number_whatsapp %}
+            <div class="user-info-row">
+              <i class="fab fa-whatsapp" style="color:#22c55e;"></i>
+              <span class="info-label">{% trans "WhatsApp" %}</span>
+              <span class="info-val">{{ user.phone_number_whatsapp }}</span>
+            </div>
+            {% endif %}
+            <div class="user-info-row">
+              <i class="fas fa-box"></i>
+              <span class="info-label">{% trans "Orders" %}</span>
+              <span class="info-val">{{ orders|length }}</span>
+            </div>
+          </div>
+          <div class="user-card-footer">
+            <a href="{% url 'edit_profile' %}" class="btn btn-outline" style="font-size:13px;padding:9px;">
+              <i class="fas fa-pen"></i> {% trans "Edit Profile" %}
+            </a>
+            <form method="post" action="{% url 'logout' %}" style="flex:none;width:auto;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-ghost" style="font-size:13px;padding:9px;">
+                <i class="fas fa-right-from-bracket"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <div class="section-head">
+          <h2><i class="fas fa-box-open"></i> {% trans "My Orders" %}</h2>
+          {% if orders %}
+            <span class="order-total-badge">
+              {% blocktrans count count=orders|length %}
+                {{ count }} order
+              {% plural %}
+                {{ count }} orders
+              {% endblocktrans %}
+            </span>
+          {% endif %}
+        </div>
+
+        {% if orders %}
+          <div class="orders-list">
+            {% for order in orders %}
+              <div class="order-card">
+                <div class="order-card-top">
+
+                  <div class="order-product-img">
+                    {% with imgs=order.product.image.all %}
+                      {% if imgs %}
+                        <img src="{{ imgs.0.image.url }}" alt="{{ order.product.name_product }}" />
+                      {% else %}
+                        <div class="order-product-img-ph"><i class="fas fa-image"></i></div>
+                      {% endif %}
+                    {% endwith %}
+                  </div>
+
+                  <div class="order-info">
+                    <div class="order-product-name">
+                      <a href="{% url 'product_details' id=order.product.id %}">{{ order.product.name_product }}</a>
+                    </div>
+                    <div class="order-meta">
+                      <span><i class="fas fa-cubes"></i> {% trans "Qty:" %} <strong>{{ order.quantity }}</strong></span>
+                      <span><i class="fas fa-calendar-days"></i> <strong>{{ order.created_at }}</strong></span>
+                    </div>
+                  </div>
+
+                  <div class="order-right">
+                    <div class="order-price">{{ order.total_price }}<span>{% trans "EGP" %}</span></div>
+                    <span class="status-badge status-{{ order.status }}">
+                      {% if order.status == 'PENDING' %}<i class="fas fa-clock" style="font-size:9px;"></i>
+                      {% elif order.status == 'APPROVED' %}<i class="fas fa-check" style="font-size:9px;"></i>
+                      {% elif order.status == 'COMPLETED' %}<i class="fas fa-circle-check" style="font-size:9px;"></i>
+                      {% elif order.status == 'CANCELLED' %}<i class="fas fa-ban" style="font-size:9px;"></i>
+                      {% elif order.status == 'REJECTED' %}<i class="fas fa-xmark" style="font-size:9px;"></i>
+                      {% endif %}
+                      {{ order.status|capfirst }}
+                    </span>
+                  </div>
+                </div>
+
+                {% if order.status == 'PENDING' or order.status == 'APPROVED' %}
+                  <div class="order-card-footer">
+                    <form method="post" action="{% url 'orders:pre_cancel' %}">
+                      {% csrf_token %}
+                      <input type="hidden" name="order_id" value="{{ order.id }}">
+                      <button type="submit" class="cancel-btn">
+                        <i class="fas fa-trash-can"></i> {% trans "Cancel Order" %}
+                      </button>
+                    </form>
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+
+        {% else %}
+          <div class="empty-orders">
+            <i class="fas fa-box-open"></i>
+            <h3>{% trans "No orders yet" %}</h3>
+            <p>{% trans "You haven't placed any orders. Start shopping!" %}</p>
+            <a href="{% url 'all_products' %}" class="btn btn-primary">
+              <i class="fas fa-bag-shopping"></i> {% trans "Browse Products" %}
+            </a>
+          </div>
+        {% endif %}
+      </main>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

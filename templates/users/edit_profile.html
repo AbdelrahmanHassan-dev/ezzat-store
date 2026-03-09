@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Edit Profile — Ezzat Store" %}{% endblock %}
+
+{% block extra_css %}
+.edit-page { padding: 36px 0 64px; }
+
+.edit-header { margin-bottom: 28px; }
+.edit-header .back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--txt-2);
+  transition: color var(--ease); margin-bottom: 12px;
+}
+.edit-header .back-link:hover { color: var(--accent); }
+.edit-header .back-link i { font-size: 11px; }
+
+.edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.edit-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.edit-card-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.edit-card-head .card-icon {
+  width: 34px; height: 34px; border-radius: var(--r);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+}
+.icon-blue { background: var(--accent-bg); color: var(--accent); }
+.icon-amber { background: rgba(245,158,11,0.12); color: var(--warning); }
+
+.edit-card-head h2 {
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: 15px; color: var(--txt);
+}
+.edit-card-head p { font-size: 12px; color: var(--txt-3); margin-top: 1px; }
+.edit-card-body { padding: 22px; }
+
+/* ── Style form.as_p output ── */
+.styled-form p {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+.styled-form p:last-of-type { margin-bottom: 0; }
+
+.styled-form label {
+  font-size: 12px; font-weight: 600;
+  color: var(--txt-2); margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+
+.styled-form input[type="text"],
+.styled-form input[type="email"],
+.styled-form input[type="password"],
+.styled-form input[type="tel"],
+.styled-form select,
+.styled-form textarea {
+  background: var(--bg-3);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--txt);
+  outline: none;
+  transition: border-color var(--ease), box-shadow var(--ease);
+  width: 100%;
+}
+.styled-form input:focus,
+.styled-form select:focus,
+.styled-form textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+.styled-form input::placeholder { color: var(--txt-3); }
+
+/* Django errorlist */
+.styled-form ul.errorlist {
+  list-style: none; margin: 5px 0 0;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.styled-form ul.errorlist li {
+  font-size: 12px; color: var(--danger);
+  display: flex; align-items: center; gap: 5px;
+}
+.styled-form ul.errorlist li::before {
+  content: '\f06a'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+  font-size: 11px;
+}
+
+/* helptext */
+.styled-form span.helptext {
+  font-size: 11px; color: var(--txt-3); margin-top: 4px; line-height: 1.5;
+}
+
+.form-submit {
+  margin-top: 20px; padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.form-submit button {
+  width: 100%; padding: 12px;
+  border: none; border-radius: var(--r);
+  font-size: 14px; font-weight: 700; font-family: inherit;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all var(--ease);
+}
+.btn-save {
+  background: var(--accent); color: #fff;
+}
+.btn-save:hover { filter: brightness(1.1); box-shadow: 0 0 20px var(--accent-glow); transform: translateY(-1px); }
+.btn-password {
+  background: rgba(245,158,11,0.12); color: var(--warning);
+  border: 1.5px solid rgba(245,158,11,0.3) !important;
+}
+.btn-password:hover { background: var(--warning); color: #000; }
+
+@media (max-width: 768px) {
+  .edit-grid { grid-template-columns: 1fr; }
+}
+{% endblock %}
+
+{% block content %}
+<div class="edit-page">
+  <div class="container">
+
+    <div class="edit-header">
+      <a href="{% url 'profile' %}" class="back-link">
+        <i class="fas fa-arrow-left"></i> {% trans "Back to Profile" %}
+      </a>
+      <h1 class="page-title">{% trans "Edit Profile" %}</h1>
+    </div>
+
+    <div class="edit-grid">
+
+      <div class="edit-card">
+        <div class="edit-card-head">
+          <div class="card-icon icon-blue"><i class="fas fa-user-pen"></i></div>
+          <div>
+            <h2>{% trans "Personal Info" %}</h2>
+            <p>{% trans "Update your username, email, and phone" %}</p>
+          </div>
+        </div>
+        <div class="edit-card-body">
+          <form method="post" class="styled-form">
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            <div class="form-submit">
+              <button type="submit" name="update_info" class="btn-save">
+                <i class="fas fa-floppy-disk"></i> {% trans "Save Changes" %}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="edit-card">
+        <div class="edit-card-head">
+          <div class="card-icon icon-amber"><i class="fas fa-lock"></i></div>
+          <div>
+            <h2>{% trans "Change Password" %}</h2>
+            <p>{% trans "Choose a strong, secure password" %}</p>
+          </div>
+        </div>
+        <div class="edit-card-body">
+          <form method="post" class="styled-form">
+            {% csrf_token %}
+            {{ password_form.as_p }}
+            <div class="form-submit">
+              <button type="submit" name="change_password" class="btn-password" style="border:none;">
+                <i class="fas fa-key"></i> {% trans "Update Password" %}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

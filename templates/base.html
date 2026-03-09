@@ -1,0 +1,709 @@
+{% load i18n %}  {% load static %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Ezzat Store{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ─── THEME VARIABLES ──────────────────────────── */
+    :root {
+      --bg:          #0e1016;
+      --bg-2:        #14171f;
+      --bg-3:        #1c2030;
+      --border:      #252b3b;
+      --border-2:    #2e3650;
+
+      --txt:         #e8ecf5;
+      --txt-2:       #7f8fb3;
+      --txt-3:       #404d6b;
+
+      --accent:      #4f7cff;
+      --accent-bg:   rgba(79,124,255,0.10);
+      --accent-glow: rgba(79,124,255,0.25);
+
+      --danger:      #ef4444;
+      --success:     #22c55e;
+      --warning:     #f59e0b;
+
+      --nav-h: 60px;
+      --r:     10px;
+      --r-lg:  16px;
+      --ease:  0.2s ease;
+    }
+
+    [data-theme="light"] {
+      --bg:          #f2f4f8;
+      --bg-2:        #ffffff;
+      --bg-3:        #e8ecf5;
+      --border:      #dde2ef;
+      --border-2:    #c8d0e5;
+      --txt:         #0e1016;
+      --txt-2:       #4a5578;
+      --txt-3:       #9aa3bf;
+      --accent:      #2563eb;
+      --accent-bg:   rgba(37,99,235,0.08);
+      --accent-glow: rgba(37,99,235,0.20);
+    }
+
+    /* ─── RESET ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      background: var(--bg);
+      color: var(--txt);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      transition: background var(--ease), color var(--ease);
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; color: inherit; }
+    img { max-width: 100%; display: block; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 99px; }
+
+    /* ─── ANNOUNCEMENT ───────────────────────────────── */
+    .ann {
+      background: var(--accent);
+      color: #fff;
+      text-align: center;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* ─── NAVBAR ──────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      height: var(--nav-h);
+      background: var(--bg-2);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      transition: box-shadow var(--ease);
+    }
+    .nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.25); }
+
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto;
+      padding: 0 20px; height: 100%;
+      display: flex; align-items: center; gap: 16px;
+    }
+
+    .logo {
+      display: flex; align-items: center; gap: 9px; flex-shrink: 0;
+    }
+    .logo-icon {
+      width: 34px; height: 34px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 17px; color: #fff;
+      transition: transform var(--ease);
+    }
+    .logo:hover .logo-icon { transform: rotate(-5deg) scale(1.05); }
+    .logo-name {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 19px; letter-spacing: 1px; color: var(--txt);
+    }
+    .logo-name em { color: var(--accent); font-style: normal; }
+
+    .nav-search { flex: 1; max-width: 400px; margin: 0 auto; }
+    .search-box {
+      display: flex; align-items: center;
+      background: var(--bg-3); border: 1.5px solid var(--border);
+      border-radius: 99px; padding: 0 14px; gap: 8px;
+      transition: border-color var(--ease), box-shadow var(--ease);
+    }
+    .search-box:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-bg);
+    }
+    .search-box i { color: var(--txt-3); font-size: 13px; }
+    .search-box input {
+      flex: 1; background: none; border: none; outline: none;
+      padding: 9px 0; font-size: 13px; font-family: inherit; color: var(--txt);
+    }
+    .search-box input::placeholder { color: var(--txt-3); }
+
+    .nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: var(--r);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--txt-2); font-size: 15px;
+      transition: background var(--ease), color var(--ease);
+    }
+    .icon-btn:hover { background: var(--bg-3); color: var(--accent); }
+
+    .lang {
+      display: flex; background: var(--bg-3);
+      border: 1px solid var(--border); border-radius: var(--r);
+      overflow: hidden; height: 32px;
+    }
+    .lang button {
+      padding: 0 10px; font-size: 11px; font-weight: 600;
+      color: var(--txt-2); transition: background var(--ease), color var(--ease);
+      letter-spacing: 0.5px;
+    }
+    .lang button.on { background: var(--accent); color: #fff; }
+    .lang-sep { width: 1px; background: var(--border); }
+
+    .theme-btn {
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: var(--r); width: 36px; height: 32px; font-size: 14px;
+      color: var(--txt-2); display: flex; align-items: center; justify-content: center;
+      transition: all var(--ease);
+    }
+    .theme-btn:hover { border-color: var(--accent); color: var(--warning); }
+
+    .auth-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 0 14px; height: 32px; border-radius: var(--r);
+      background: var(--accent-bg); border: 1.5px solid var(--accent);
+      color: var(--accent); font-size: 13px; font-weight: 600;
+      transition: all var(--ease);
+    }
+    .auth-btn:hover { background: var(--accent); color: #fff; }
+
+    .avatar-wrap { position: relative; }
+    .avatar {
+      width: 34px; height: 34px; border-radius: var(--r);
+      background: var(--accent); color: #fff;
+      font-weight: 700; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; border: 2px solid transparent;
+      transition: border-color var(--ease), box-shadow var(--ease);
+    }
+    .avatar-wrap.open .avatar, .avatar:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-bg);
+    }
+    .dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0;
+      width: 188px; background: var(--bg-2);
+      border: 1px solid var(--border); border-radius: var(--r-lg);
+      padding: 6px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      opacity: 0; transform: translateY(-6px) scale(0.97);
+      pointer-events: none; transition: all 0.18s ease;
+      transform-origin: top right;
+    }
+    .avatar-wrap.open .dropdown { opacity: 1; transform: none; pointer-events: all; }
+    .dd-head { padding: 8px 10px 10px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+    .dd-head .name { font-weight: 600; font-size: 13px; }
+    .dd-head .sub  { font-size: 11px; color: var(--txt-3); margin-top: 1px; }
+    .dd-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 8px 10px; border-radius: 7px;
+      font-size: 13px; color: var(--txt-2);
+      transition: background var(--ease), color var(--ease);
+    }
+    .dd-item i { width: 14px; text-align: center; font-size: 13px; }
+    .dd-item:hover { background: var(--bg-3); color: var(--txt); }
+    .dd-item.red:hover { color: var(--danger); }
+    .dd-sep { height: 1px; background: var(--border); margin: 4px 0; }
+
+    .burger {
+      display: none; flex-direction: column; gap: 5px;
+      width: 36px; height: 36px; align-items: center; justify-content: center;
+      border-radius: var(--r);
+    }
+    .burger:hover { background: var(--bg-3); }
+    .burger span {
+      display: block; width: 20px; height: 2px;
+      background: var(--txt-2); border-radius: 99px;
+      transition: all 0.25s ease;
+    }
+    .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger.open span:nth-child(2) { opacity: 0; }
+    .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mob-search {
+      display: none; padding: 0 16px 10px;
+      background: var(--bg-2); border-bottom: 1px solid var(--border);
+    }
+
+    /* ─── DRAWER ─────────────────────────────────────── */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(3px);
+      z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .overlay.show { opacity: 1; pointer-events: all; }
+    .drawer {
+      position: fixed; top: 0; left: 0; bottom: 0; width: 272px;
+      background: var(--bg-2); border-right: 1px solid var(--border);
+      z-index: 201; transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+      display: flex; flex-direction: column; overflow-y: auto;
+    }
+    [dir="rtl"] .drawer { left: auto; right: 0; transform: translateX(100%); border-right: none; border-left: 1px solid var(--border); }
+    .drawer.show { transform: none; }
+    .drawer-top {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px; border-bottom: 1px solid var(--border);
+    }
+    .drawer-body { padding: 10px; flex: 1; }
+    .sec-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--txt-3); padding: 12px 10px 6px;
+    }
+    .d-item {
+      display: flex; align-items: center; gap: 11px;
+      padding: 10px 12px; border-radius: var(--r);
+      font-size: 14px; color: var(--txt-2);
+      transition: all var(--ease); margin-bottom: 1px;
+      width: 100%; text-align: left;
+    }
+    .d-item i { width: 18px; text-align: center; font-size: 15px; }
+    .d-item:hover, .d-item.active { background: var(--accent-bg); color: var(--accent); }
+    .drawer-footer { padding: 14px 16px; border-top: 1px solid var(--border); }
+    .drawer-bottom-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+
+    /* ─── TOASTS ─────────────────────────────────────── */
+    .toasts {
+      position: fixed; top: 72px; right: 16px; z-index: 9999;
+      display: flex; flex-direction: column; gap: 8px;
+      width: 320px; max-width: calc(100vw - 32px); pointer-events: none;
+    }
+    .toast {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px 14px; background: var(--bg-2);
+      border: 1px solid var(--border); border-left: 3px solid;
+      border-radius: var(--r); box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+      pointer-events: all; animation: tin 0.35s ease forwards;
+      position: relative; overflow: hidden;
+    }
+    .toast::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: currentColor; opacity: 0.25;
+      animation: tbar 5s linear forwards;
+    }
+    @keyframes tbar { from { transform-origin: left; transform: scaleX(1); } to { transform-origin: left; transform: scaleX(0); } }
+    @keyframes tin  { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: none; } }
+    @keyframes tout { from { opacity: 1; max-height: 120px; margin-bottom: 8px; } to { opacity: 0; transform: translateX(20px); max-height: 0; padding: 0; margin: 0; } }
+    .toast.out { animation: tout 0.3s ease forwards; }
+
+    .toast.success { border-left-color: var(--success); color: var(--success); }
+    .toast.error   { border-left-color: var(--danger);  color: var(--danger); }
+    .toast.warning { border-left-color: var(--warning); color: var(--warning); }
+    .toast.info    { border-left-color: var(--accent);  color: var(--accent); }
+
+    .toast-ico  { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .toast-body { flex: 1; }
+    .toast-title { font-weight: 700; font-size: 12px; color: inherit; margin-bottom: 1px; }
+    .toast-msg   { font-size: 13px; color: var(--txt-2); line-height: 1.4; }
+    .toast-x { color: var(--txt-3); font-size: 13px; padding: 2px; border-radius: 4px; transition: color var(--ease); }
+    .toast-x:hover { color: var(--txt); }
+
+    /* ─── MAIN ───────────────────────────────────────── */
+    main { flex: 1; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+
+    /* ─── HELPERS ────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 7px; padding: 9px 20px; border-radius: var(--r);
+      font-size: 14px; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: all var(--ease);
+    }
+    .btn-primary { background: var(--accent); color: #fff; border: 2px solid transparent; }
+    .btn-primary:hover { filter: brightness(1.1); box-shadow: 0 0 20px var(--accent-glow); }
+    .btn-outline { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
+    .btn-outline:hover { background: var(--accent-bg); }
+    .btn-ghost   { background: var(--bg-3); color: var(--txt-2); border: 1.5px solid var(--border); }
+    .btn-ghost:hover { color: var(--txt); border-color: var(--border-2); }
+    .btn-danger  { background: rgba(239,68,68,0.1); color: var(--danger); border: 1.5px solid var(--danger); }
+    .btn-danger:hover { background: var(--danger); color: #fff; }
+
+    .card {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--r-lg); overflow: hidden;
+      transition: border-color var(--ease), transform var(--ease), box-shadow var(--ease);
+    }
+    .card:hover { border-color: var(--border-2); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+
+    .page-title {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(22px, 4vw, 30px); color: var(--txt); line-height: 1.2;
+    }
+
+    .label { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+    .label-accent  { background: var(--accent-bg);          color: var(--accent); }
+    .label-success { background: rgba(34,197,94,0.1);        color: var(--success); }
+    .label-warning { background: rgba(245,158,11,0.1);       color: var(--warning); }
+    .label-danger  { background: rgba(239,68,68,0.1);        color: var(--danger); }
+
+    /* ─── FOOTER ──────────────────────────────────────── */
+    footer { background: var(--bg-2); border-top: 1px solid var(--border); margin-top: auto; }
+    .footer-grid {
+      max-width: 1280px; margin: 0 auto;
+      padding: 48px 20px 36px;
+      display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px;
+    }
+    .footer-desc { color: var(--txt-2); font-size: 13px; line-height: 1.7; max-width: 240px; margin: 12px 0 18px; }
+    .socials { display: flex; gap: 8px; }
+    .social {
+      width: 34px; height: 34px; border-radius: var(--r);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--txt-3); font-size: 14px;
+      transition: all var(--ease);
+    }
+    .social:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+    .footer-col h4 {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 13px; color: var(--txt); margin-bottom: 14px; letter-spacing: 0.3px;
+    }
+    .f-links { display: flex; flex-direction: column; gap: 9px; }
+    .f-links a { font-size: 13px; color: var(--txt-2); transition: color var(--ease); }
+    .f-links a:hover { color: var(--accent); }
+    .footer-bar {
+      max-width: 1280px; margin: 0 auto; padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; flex-wrap: wrap;
+    }
+    .footer-bar p { font-size: 12px; color: var(--txt-3); }
+    .footer-bar a { color: var(--accent); }
+    .payment-tags { display: flex; gap: 6px; }
+    .ptag {
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: 5px; padding: 3px 8px;
+      font-size: 10px; font-weight: 700; color: var(--txt-3); letter-spacing: 0.5px;
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav-search, .lang, .theme-btn, .auth-btn { display: none; }
+      .burger { display: flex; }
+      .mob-search { display: block; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+      .footer-about { grid-column: 1 / -1; }
+      .toasts { right: 12px; left: 12px; width: auto; }
+    }
+    @media (max-width: 480px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bar { flex-direction: column; align-items: center; text-align: center; }
+    }
+
+    {% block extra_css %}{% endblock %}
+  </style>
+</head>
+<body>
+
+  <div class="ann">🚚 {% trans "Free delivery on orders above 500 EGP &nbsp;·&nbsp; Cash on delivery available" %}</div>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+
+      <button class="burger" id="burger" aria-label="{% trans 'Menu' %}">
+        <span></span><span></span><span></span>
+      </button>
+
+      <a href="{% url 'all_products' %}" class="logo">
+        <div class="logo-icon">E</div>
+        <span class="logo-name">EZZA<em>T</em></span>
+      </a>
+
+      <div class="nav-search">
+        <form method="GET" action="{% url 'search' %}">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="search" name="product" placeholder="{% trans 'Search products…' %}" value="{{ request.GET.product }}" autocomplete="off" />
+          </div>
+        </form>
+      </div>
+
+<div class="nav-right">
+        <div class="lang">
+          <form action="{% url 'set_language' %}" method="post" style="display: flex; height: 100%;">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                        
+            <button type="submit" name="language" value="en" 
+                    id="btn-en" class="{% if LANGUAGE_CODE == 'en' %}on{% endif %}">EN</button>
+
+            <div class="lang-sep"></div>
+
+            <button type="submit" name="language" value="ar" 
+                    id="btn-ar" class="{% if LANGUAGE_CODE == 'ar' %}on{% endif %}">AR</button>
+
+            <div class="lang-sep"></div>
+
+            <button type="submit" name="language" value="ru" 
+                    id="btn-ru" class="{% if LANGUAGE_CODE == 'ru' %}on{% endif %}">RU</button>
+          </form>
+        </div>
+        <button class="theme-btn" id="themeBtn">
+          <i id="themeIco" class="fas fa-moon"></i>
+        </button>
+
+        {% if user.is_authenticated %}
+          <div class="avatar-wrap" id="avWrap">
+            <div class="avatar" id="av">{{ user.username|first|upper }}</div>
+            <div class="dropdown">
+              <div class="dd-head">
+                <div class="name">{{ user.get_full_name|default:user.username }}</div>
+                <div class="sub">{{ user.email }}</div>
+              </div>
+              <a href="{% url 'profile' %}" class="dd-item"><i class="fas fa-user"></i> {% trans "Profile" %}</a>
+              <a href="{% url 'edit_profile' %}" class="dd-item"><i class="fas fa-pen"></i> {% trans "Edit Profile" %}</a>
+              <div class="dd-sep"></div>
+              <form method="post" action="{% url 'logout' %}" style="display:contents">
+                {% csrf_token %}
+                <button type="submit" class="dd-item red" style="width:100%;text-align:left;">
+                  <i class="fas fa-right-from-bracket"></i> {% trans "Sign Out" %}
+                </button>
+              </form>
+            </div>
+          </div>
+        {% else %}
+          <a href="{% url 'login' %}" class="auth-btn">
+            <i class="fas fa-right-to-bracket"></i> {% trans "Sign In" %}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="mob-search">
+      <form method="GET" action="{% url 'search' %}">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="search" name="product" placeholder="{% trans 'Search…' %}" value="{{ request.GET.product }}" />
+        </div>
+      </form>
+    </div>
+  </nav>
+
+  <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+  <div class="drawer" id="drawer">
+    <div class="drawer-top">
+      <a href="{% url 'all_products' %}" class="logo" onclick="closeDrawer()">
+        <div class="logo-icon">E</div>
+        <span class="logo-name">EZZA<em>T</em></span>
+      </a>
+      <button class="icon-btn" onclick="closeDrawer()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="drawer-body">
+      <div class="sec-label">{% trans "Menu" %}</div>
+      <a href="{% url 'all_products' %}" class="d-item"><i class="fas fa-house"></i> {% trans "Home" %}</a>
+      <a href="{% url 'all_products' %}" class="d-item"><i class="fas fa-box-open"></i> {% trans "All Products" %}</a>
+      <a href="{% url 'search' %}" class="d-item"><i class="fas fa-search"></i> {% trans "Search" %}</a>
+
+      {% if user.is_authenticated %}
+        <div class="sec-label">{% trans "Account" %}</div>
+        <a href="{% url 'profile' %}" class="d-item"><i class="fas fa-user"></i> {% trans "My Profile" %}</a>
+        <a href="{% url 'edit_profile' %}" class="d-item"><i class="fas fa-pen"></i> {% trans "Edit Profile" %}</a>
+        <div class="sec-label"></div>
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="d-item"><i class="fas fa-right-from-bracket"></i> {% trans "Sign Out" %}</button>
+        </form>
+      {% else %}
+        <div class="sec-label">{% trans "Account" %}</div>
+        <a href="{% url 'login' %}" class="d-item"><i class="fas fa-right-to-bracket"></i> {% trans "Sign In" %}</a>
+        <a href="{% url 'signup' %}" class="d-item"><i class="fas fa-user-plus"></i> {% trans "Sign Up" %}</a>
+      {% endif %}
+    </div>
+    <div class="drawer-footer">
+      <div class="drawer-bottom-row">
+        <div class="lang" style="flex:1;">
+          <form action="{% url 'set_language' %}" method="post" style="display:flex;height:100%;width:100%;">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ request.get_full_path }}">
+            <button type="submit" name="language" value="en"
+                    class="{% if LANGUAGE_CODE == 'en' %}on{% endif %}" style="flex:1;">EN</button>
+            <div class="lang-sep"></div>
+            <button type="submit" name="language" value="ar"
+                    class="{% if LANGUAGE_CODE == 'ar' %}on{% endif %}" style="flex:1;">AR</button>
+            <div class="lang-sep"></div>
+            <button type="submit" name="language" value="ru"
+                    class="{% if LANGUAGE_CODE == 'ru' %}on{% endif %}" style="flex:1;">RU</button>
+          </form>
+        </div>
+        <button class="theme-btn" id="themeBtnD">
+          <i id="themeIcoD" class="fas fa-moon"></i>
+        </button>
+      </div>
+      <p style="font-size:11px;color:var(--txt-3);">© 2026 {% trans "Ezzat Store" %}</p>
+    </div>
+  </div>
+
+  <div class="toasts">
+    {% if messages %}
+      {% for message in messages %}
+        {% if 'error' in message.tags %}
+          <div class="toast error">
+            <div class="toast-ico"><i class="fas fa-circle-xmark"></i></div>
+            <div class="toast-body"><div class="toast-title">{% trans "Error" %}</div><div class="toast-msg">{{ message }}</div></div>
+            <button class="toast-x" onclick="killToast(this.closest('.toast'))"><i class="fas fa-times"></i></button>
+          </div>
+        {% elif 'success' in message.tags %}
+          <div class="toast success">
+            <div class="toast-ico"><i class="fas fa-circle-check"></i></div>
+            <div class="toast-body"><div class="toast-title">{% trans "Success" %}</div><div class="toast-msg">{{ message }}</div></div>
+            <button class="toast-x" onclick="killToast(this.closest('.toast'))"><i class="fas fa-times"></i></button>
+          </div>
+        {% elif 'warning' in message.tags %}
+          <div class="toast warning">
+            <div class="toast-ico"><i class="fas fa-triangle-exclamation"></i></div>
+            <div class="toast-body"><div class="toast-title">{% trans "Warning" %}</div><div class="toast-msg">{{ message }}</div></div>
+            <button class="toast-x" onclick="killToast(this.closest('.toast'))"><i class="fas fa-times"></i></button>
+          </div>
+        {% else %}
+          <div class="toast info">
+            <div class="toast-ico"><i class="fas fa-circle-info"></i></div>
+            <div class="toast-body"><div class="toast-title">{% trans "Notice" %}</div><div class="toast-msg">{{ message }}</div></div>
+            <button class="toast-x" onclick="killToast(this.closest('.toast'))"><i class="fas fa-times"></i></button>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a href="{% url 'all_products' %}" class="logo">
+          <div class="logo-icon">E</div>
+          <span class="logo-name">EZZA<em>T</em></span>
+        </a>
+        <p class="footer-desc">{% trans "Your destination for electronics and gadgets in Egypt. Phones, accessories, cables, earbuds, and more." %}</p>
+        <div class="socials">
+          <a href="https://www.facebook.com/mahmoud.ezaat.15919" class="social" target="_blank"><i class="fab fa-facebook-f"></i></a>   
+          <!-- <a href="#" class="social"><i class="fab fa-instagram"></i></a> -->
+          <a href="https://wa.me/2011142510" class="social" target="_blank"><i class="fab fa-whatsapp"></i></a>   
+          <!-- <a href="#" class="social"><i class="fab fa-tiktok"></i></a> -->
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>{% trans "Shop" %}</h4>
+        <div class="f-links">
+          <a href="{% url 'all_products' %}">{% trans "All Products" %}</a>
+          <a href="{% url 'search' %}">{% trans "Search" %}</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>{% trans "Account" %}</h4>
+        <div class="f-links">
+          {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}">{% trans "My Profile" %}</a>
+            <a href="{% url 'edit_profile' %}">{% trans "Edit Profile" %}</a>
+          {% else %}
+            <a href="{% url 'login' %}">{% trans "Sign In" %}</a>
+            <a href="{% url 'signup' %}">{% trans "Create Account" %}</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <p>© 2026 <a href="{% url 'all_products' %}">{% trans "Ezzat Store" %}</a></p>
+      <p><a href="https://github.com/AbdelrahmanHassan-dev/">{% trans "Web made by Abdelrahman Mohamed" %}</a> . +201119973724 <a href="mailto:abdelrahmanxmohamed@gmail.com">Send Email: abdelrahmanxmohamed@gmail.com</a></p>
+      <div class="payment-tags">
+        <!-- <span class="ptag">{% trans "VISA" %}</span>
+        <span class="ptag">{% trans "MC" %}</span>
+        <span class="ptag">{% trans "COD" %}</span> -->
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* THEME */
+    const html = document.documentElement;
+    (function(){ applyTheme(localStorage.getItem('ez-theme') || 'dark', false); })();
+
+    function applyTheme(t, save=true) {
+      html.setAttribute('data-theme', t);
+      if (save) localStorage.setItem('ez-theme', t);
+      const cls = t === 'dark' ? 'fa-sun' : 'fa-moon';
+      ['themeIco','themeIcoD'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.className = 'fas ' + cls;
+      });
+    }
+    document.getElementById('themeBtn')?.addEventListener('click', () =>
+      applyTheme(html.dataset.theme === 'dark' ? 'light' : 'dark'));
+    document.getElementById('themeBtnD')?.addEventListener('click', () =>
+      applyTheme(html.dataset.theme === 'dark' ? 'light' : 'dark'));
+
+    // /* LANGUAGE */
+    // (function(){ applyLang(localStorage.getItem('ez-lang') || 'en', false); })();
+
+    // function setLang(l) { applyLang(l); localStorage.setItem('ez-lang', l); }
+    // function applyLang(l, upd=true) {
+    //   html.setAttribute('lang', l);
+    //   html.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
+    //   ['en','ar'].forEach(x => {
+    //     ['btn-'+x, 'btn-'+x+'-d'].forEach(id => {
+    //       document.getElementById(id)?.classList.toggle('on', x === l);
+    //     });
+    //   });
+    // }
+
+    /* NAVBAR SCROLL */
+    window.addEventListener('scroll', () =>
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10)
+    , { passive: true });
+
+    /* DRAWER */
+    function openDrawer() {
+      document.getElementById('drawer').classList.add('show');
+      document.getElementById('overlay').classList.add('show');
+      document.getElementById('burger').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      document.getElementById('drawer').classList.remove('show');
+      document.getElementById('overlay').classList.remove('show');
+      document.getElementById('burger')?.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('burger')?.addEventListener('click', () =>
+      document.getElementById('drawer').classList.contains('show') ? closeDrawer() : openDrawer()
+    );
+
+    /* AVATAR DROPDOWN */
+    const avWrap = document.getElementById('avWrap');
+    document.getElementById('av')?.addEventListener('click', e => {
+      e.stopPropagation();
+      avWrap.classList.toggle('open');
+    });
+    document.addEventListener('click', e => {
+      if (avWrap && !avWrap.contains(e.target)) avWrap.classList.remove('open');
+    });
+
+    /* ESC */
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeDrawer(); avWrap?.classList.remove('open'); }
+    });
+
+    /* TOASTS */
+    function killToast(t) {
+      t.classList.add('out');
+      setTimeout(() => t.remove(), 320);
+    }
+    document.querySelectorAll('.toast').forEach((t, i) =>
+      setTimeout(() => { if (t.isConnected) killToast(t); }, 5000 + i * 400)
+    );
+  </script>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

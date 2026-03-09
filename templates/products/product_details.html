@@ -1,0 +1,404 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ product.name_product }} — Ezzat Store{% endblock %}
+
+{% block extra_css %}
+<style>
+  .details-page { 
+    padding: 36px 0 64px; 
+  }
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--txt-3);
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .breadcrumb a { 
+    color: var(--txt-2); 
+    transition: color var(--ease); 
+  }
+  .breadcrumb a:hover { 
+    color: var(--accent); 
+  }
+  .breadcrumb i { 
+    font-size: 10px; 
+    color: var(--txt-3); 
+  }
+
+  /* ── LAYOUT ── */
+  .details-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* ── GALLERY ── */
+  .gallery { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+  }
+  .gallery-main {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    position: relative;
+  }
+  .gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.25s ease;
+    display: block;
+  }
+  .gallery-main-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--txt-3);
+  }
+  .gallery-main-placeholder i { font-size: 48px; }
+
+  .gallery-thumbs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .gallery-thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--r);
+    overflow: hidden;
+    border: 2px solid var(--border);
+    cursor: pointer;
+    transition: border-color var(--ease);
+    flex-shrink: 0;
+  }
+  .gallery-thumb img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+  }
+  .gallery-thumb.active, .gallery-thumb:hover { 
+    border-color: var(--accent); 
+  }
+
+  /* ── INFO PANEL ── */
+  .info-panel { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px; 
+  }
+  .product-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(20px, 3.5vw, 28px);
+    color: var(--txt);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .info-badges { 
+    display: flex; 
+    gap: 8px; 
+    flex-wrap: wrap; 
+    margin-bottom: 16px; 
+  }
+  .avail-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .avail-yes { 
+    background: rgba(34,197,94,0.12); 
+    color: var(--success); 
+    border: 1px solid rgba(34,197,94,0.3); 
+  }
+  .avail-no { 
+    background: rgba(239,68,68,0.12); 
+    color: var(--danger); 
+    border: 1px solid rgba(239,68,68,0.3); 
+  }
+  .stock-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--bg-3);
+    color: var(--txt-2);
+    border: 1px solid var(--border);
+  }
+
+  /* PRICE */
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 16px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .price-main {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    color: var(--accent);
+  }
+  .price-currency { 
+    font-size: 15px; 
+    font-weight: 600; 
+    color: var(--txt-2); 
+  }
+
+  /* DESCRIPTION */
+  .desc-section h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--txt-3);
+    margin-bottom: 8px;
+  }
+  .desc-section p {
+    font-size: 14px;
+    color: var(--txt-2);
+    line-height: 1.7;
+  }
+
+  /* ORDER FORM */
+  .order-form-box {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 20px;
+  }
+  .order-form-box h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--txt);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .order-form-box h3 i { color: var(--accent); }
+
+  .qty-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .qty-input {
+    width: 100px;
+    background: var(--bg-3);
+    border: 1.5px solid var(--border);
+    border-radius: var(--r);
+    padding: 9px 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--txt);
+    outline: none;
+    transition: border-color var(--ease), box-shadow var(--ease);
+  }
+  .qty-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-bg);
+  }
+
+  .buy-btn {
+    width: 100%;
+    padding: 13px 20px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--r);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all var(--ease);
+  }
+  .buy-btn:hover {
+    filter: brightness(1.12);
+    box-shadow: 0 0 24px var(--accent-glow);
+    transform: translateY(-1px);
+  }
+  .buy-btn:disabled {
+    background: var(--bg-3);
+    color: var(--txt-3);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 860px) {
+    .details-layout { grid-template-columns: 1fr; gap: 28px; }
+  }
+  @media (max-width: 480px) {
+    .details-page { padding: 20px 0 48px; }
+    .price-main { font-size: 26px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="details-page">
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a href="{% url 'home' %}">{% trans "Home" %}</a>
+      <i class="fas fa-chevron-right"></i>
+      <a href="{% url 'all_products' %}">{% trans "All Products" %}</a>
+      <i class="fas fa-chevron-right"></i>
+      <span>{{ product.name_product }}</span>
+    </nav>
+
+    <div class="details-layout">
+
+      <div class="gallery">
+        <div class="gallery-main" id="mainImgContainer">
+          {% with images=product.image.all %}
+            {% if images %}
+              <img src="{{ images.0.image.url }}" alt="{{ product.name_product }}" id="activeImg" />
+            {% else %}
+              <div class="gallery-main-placeholder">
+                <i class="fas fa-image"></i>
+                <span>{% trans "No image available" %}</span>
+              </div>
+            {% endif %}
+          {% endwith %}
+        </div>
+
+        {% with images=product.image.all %}
+          {% if images.count > 1 %}
+            <div class="gallery-thumbs">
+              {% for img in images %}
+                <div class="gallery-thumb {% if forloop.first %}active{% endif %}" onclick="switchImg(this, '{{ img.image.url }}')">
+                  <img src="{{ img.image.url }}" alt="{{ product.name_product }}" loading="lazy" />
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+      </div>
+
+      <div class="info-panel">
+        <div class="info-top">
+          <h1 class="product-name">{{ product.name_product }}</h1>
+          
+          <div class="info-badges">
+            {% if product.is_available %}
+              <span class="avail-badge avail-yes">
+                <i class="fas fa-circle" style="font-size:6px;"></i> {% trans "In Stock" %}
+              </span>
+            {% else %}
+              <span class="avail-badge avail-no">
+                <i class="fas fa-circle" style="font-size:6px;"></i> {% trans "Out of Stock" %}
+              </span>
+            {% endif %}
+            
+            <span class="stock-badge">
+              <i class="fas fa-cubes" style="font-size:11px;"></i>
+              {{ product.stock }} {% trans "units left" %}
+            </span>
+          </div>
+
+          <div class="price-row">
+            <span class="price-main">{{ product.price }}</span>
+            <span class="price-currency">{% trans "EGP" %}</span>
+          </div>
+        </div>
+
+        <div class="desc-section">
+          <h3>{% trans "Description" %}</h3>
+          <p>{{ product.description }}</p>
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <i class="fas fa-calendar-days"></i>
+            {% trans "Added" %} <strong>{{ product.date_adding }}</strong>
+          </div>
+        </div>
+
+        {% if product.is_available and product.stock > 0 %}
+          <div class="order-form-box">
+            <h3><i class="fas fa-bag-shopping"></i> {% trans "Place Your Order" %}</h3>
+            <form action="{% url 'orders:pre_confirm' %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="id" value="{{ product.id }}" />
+              
+              <div class="qty-row">
+                <label for="qty" class="qty-label">{% trans "Quantity" %}</label>
+                <input type="number" name="quantity" id="qty" class="qty-input" value="1" min="1" max="{{ product.stock }}" />
+                <span class="qty-max">{% trans "max" %} {{ product.stock }}</span>
+              </div>
+
+              <button type="submit" class="buy-btn">
+                <i class="fas fa-bolt"></i> {% trans "Buy Now" %}
+              </button>
+            </form>
+            <p class="order-note">
+              <i class="fas fa-phone"></i>
+              {% trans "We will call you to confirm your order" %}
+            </p>
+          </div>
+        {% else %}
+          <div class="order-form-box">
+            <h3><i class="fas fa-ban" style="color:var(--danger);"></i> {% trans "Unavailable" %}</h3>
+            <button class="buy-btn" disabled>
+              <i class="fas fa-clock"></i> {% trans "Currently Out of Stock" %}
+            </button>
+          </div>
+        {% endif %}
+      </div> </div> </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  /**
+   * تبديل الصورة الرئيسية عند الضغط على الصور المصغرة
+   */
+  function switchImg(thumb, src) {
+    const mainImg = document.getElementById('activeImg');
+    if (mainImg) {
+      mainImg.style.opacity = '0';
+      setTimeout(() => {
+        mainImg.src = src;
+        mainImg.style.opacity = '1';
+      }, 200);
+    }
+    
+    // تحديث الحالة النشطة (Active Class)
+    document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+  }
+</script>
+{% endblock %}

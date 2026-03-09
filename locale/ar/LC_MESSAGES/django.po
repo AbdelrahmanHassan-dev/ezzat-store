@@ -1,0 +1,495 @@
+# Arabic translations for Ezzat Store.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Ezzat Store 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-09 12:19+0000\n"
+"PO-Revision-Date: 2026-03-09 13:50+0000\n"
+"Last-Translator: Abdelrahman\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: templates/base.html:409
+msgid "Free delivery on orders above 500 EGP &nbsp;·&nbsp; Cash on delivery available"
+msgstr "توصيل مجاني للطلبات فوق 500 ج.م &nbsp;·&nbsp; الدفع عند الاستلام متاح"
+
+#: templates/base.html:414 templates/base.html:498
+msgid "Menu"
+msgstr "القائمة"
+
+#: templates/base.html:427
+msgid "Search products…"
+msgstr "ابحث عن المنتجات..."
+
+#: templates/base.html:459
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+#: templates/base.html:460 templates/base.html:506 templates/base.html:594 templates/users/edit_profile.html:142 templates/users/profile.html:207
+msgid "Edit Profile"
+msgstr "تعديل الملف الشخصي"
+
+#: templates/base.html:465 templates/base.html:510
+msgid "Sign Out"
+msgstr "تسجيل الخروج"
+
+#: templates/base.html:472 templates/base.html:514 templates/base.html:596
+msgid "Sign In"
+msgstr "تسجيل الدخول"
+
+#: templates/base.html:482
+msgid "Search…"
+msgstr "بحث..."
+
+#: templates/base.html:499 templates/products/pre_confirm.html:121 templates/products/product_details.html:275
+msgid "Home"
+msgstr "الرئيسية"
+
+#: templates/base.html:500 templates/base.html:585 templates/products/all_products.html:4 templates/products/all_products.html:234 templates/products/product_details.html:277
+msgid "All Products"
+msgstr "جميع المنتجات"
+
+#: templates/base.html:501 templates/base.html:586 templates/products/search.html:3 templates/products/search.html:183
+msgid "Search"
+msgstr "بحث"
+
+#: templates/base.html:504 templates/base.html:513 templates/base.html:590
+msgid "Account"
+msgstr "الحساب"
+
+#: templates/base.html:505 templates/base.html:593
+msgid "My Profile"
+msgstr "ملفي الشخصي"
+
+#: templates/base.html:515
+msgid "Sign Up"
+msgstr "إنشاء حساب"
+
+#: templates/base.html:529 templates/base.html:603 templates/products/confirm.html:75 templates/products/search.html:3
+msgid "Ezzat Store"
+msgstr "متجر عزت"
+
+#: templates/base.html:539
+msgid "Error"
+msgstr "خطأ"
+
+#: templates/base.html:545
+msgid "Success"
+msgstr "تم بنجاح"
+
+#: templates/base.html:551
+msgid "Warning"
+msgstr "تحذير"
+
+#: templates/base.html:557
+msgid "Notice"
+msgstr "تنبيه"
+
+#: templates/base.html:574
+msgid "Your destination for electronics and gadgets in Egypt. Phones, accessories, cables, earbuds, and more."
+msgstr "وجهتك الأولى للإلكترونيات في مصر. هواتف، إكسسوارات، كابلات، سماعات، وأكثر."
+
+#: templates/base.html:583
+msgid "Shop"
+msgstr "المتجر"
+
+#: templates/base.html:597
+msgid "Create Account"
+msgstr "فتح حساب جديد"
+
+#: templates/base.html:603
+msgid "Made in Egypt 🇪🇬"
+msgstr "صُنع في مصر 🇪🇬"
+
+#: templates/base.html:605
+msgid "VISA"
+msgstr "فيزا"
+
+#: templates/base.html:606
+msgid "MC"
+msgstr "ماستر كارد"
+
+#: templates/base.html:607
+msgid "COD"
+msgstr "دفع نقدي"
+
+#: templates/products/all_products.html:236
+#, python-format
+msgid ""
+"\n"
+"            <strong>%(counter)s</strong> product available\n"
+"          "
+msgid_plural ""
+"\n"
+"            <strong>%(counter)s</strong> products available\n"
+"          "
+msgstr[0] ""
+"\n"
+"            لا توجد <strong>منتجات</strong> متاحة\n"
+"          "
+msgstr[1] ""
+"\n"
+"            هناك <strong>منتج واحد</strong> متاح\n"
+"          "
+msgstr[2] ""
+"\n"
+"            هناك <strong>منتجان</strong> متاحان\n"
+"          "
+msgstr[3] ""
+"\n"
+"            هناك <strong>%(counter)s</strong> منتجات متاحة\n"
+"          "
+msgstr[4] ""
+"\n"
+"            هناك <strong>%(counter)s</strong> منتجاً متاحاً\n"
+"          "
+msgstr[5] ""
+"\n"
+"            هناك <strong>%(counter)s</strong> منتج متاح\n"
+"          "
+
+#: templates/products/all_products.html:263
+msgid "No image"
+msgstr "لا توجد صورة"
+
+#: templates/products/all_products.html:269 templates/products/pre_confirm.html:150 templates/products/product_details.html:318 templates/products/search.html:211
+msgid "In Stock"
+msgstr "متوفر في المخزن"
+
+#: templates/products/all_products.html:271 templates/products/pre_confirm.html:150 templates/products/product_details.html:322 templates/products/search.html:213
+msgid "Out of Stock"
+msgstr "نفد من المخزن"
+
+#: templates/products/all_products.html:282 templates/products/cancel_order.html:68 templates/products/confirm.html:92 templates/products/pre_confirm.html:145 templates/products/pre_confirm.html:161 templates/products/pre_confirm.html:166 templates/products/product_details.html:334 templates/products/search.html:220 templates/users/profile.html:260
+msgid "EGP"
+msgstr "ج.م"
+
+#: templates/products/all_products.html:285
+msgid "Stock"
+msgstr "المخزون"
+
+#: templates/products/all_products.html:296 templates/products/search.html:225
+msgid "View"
+msgstr "عرض التفاصيل"
+
+#: templates/products/all_products.html:304
+msgid "No products yet"
+msgstr "لا توجد منتجات بعد"
+
+#: templates/products/all_products.html:305
+msgid "Check back soon — new items are coming."
+msgstr "تحقق مرة أخرى قريباً — هناك منتجات جديدة في الطريق."
+
+#: templates/products/cancel_order.html:3
+msgid "Cancel Order — Ezzat Store"
+msgstr "إلغاء الطلب — متجر عزت"
+
+#: templates/products/cancel_order.html:62
+msgid "Cancel Order?"
+msgstr "إلغاء الطلب؟"
+
+#: templates/products/cancel_order.html:63
+msgid "This action will cancel your order and return the item to stock. Are you sure?"
+msgstr "سيؤدي هذا الإجراء إلى إلغاء طلبك وإعادة المنتج للمخزون. هل أنت متأكد؟"
+
+#: templates/products/cancel_order.html:67
+msgid "Order"
+msgstr "الطلب"
+
+#: templates/products/cancel_order.html:68
+msgid "Qty"
+msgstr "الكمية"
+
+#: templates/products/cancel_order.html:68 templates/products/confirm.html:91 templates/products/pre_confirm.html:165
+msgid "Total"
+msgstr "الإجمالي"
+
+#: templates/products/cancel_order.html:77
+msgid "Yes, Cancel"
+msgstr "نعم، إلغاء"
+
+#: templates/products/cancel_order.html:83
+msgid "Go Back"
+msgstr "الرجوع"
+
+#: templates/products/confirm.html:3
+msgid "Order Confirmed — Ezzat Store"
+msgstr "تم تأكيد الطلب — متجر عزت"
+
+#: templates/products/confirm.html:73
+msgid "Order Placed!"
+msgstr "تم تقديم الطلب!"
+
+#: templates/products/confirm.html:75
+msgid "Thank you for shopping at"
+msgstr "شكراً لتسوقك من"
+
+#: templates/products/confirm.html:76
+msgid "We will call you soon to confirm your order and arrange delivery."
+msgstr "سنتصل بك قريباً لتأكيد طلبك وترتيب التوصيل."
+
+#: templates/products/confirm.html:82 templates/products/pre_confirm.html:160
+msgid "Product"
+msgstr "المنتج"
+
+#: templates/products/confirm.html:86 templates/products/pre_confirm.html:162 templates/products/product_details.html:358
+msgid "Quantity"
+msgstr "الكمية"
+
+#: templates/products/confirm.html:99 templates/users/profile.html:221
+msgid "My Orders"
+msgstr "طلباتي"
+
+#: templates/products/confirm.html:102
+msgid "Keep Shopping"
+msgstr "مواصلة التسوق"
+
+#: templates/products/pre_confirm.html:3
+msgid "Confirm Order — Ezzat Store"
+msgstr "تأكيد الطلب — متجر عزت"
+
+#: templates/products/pre_confirm.html:123
+msgid "Products"
+msgstr "المنتجات"
+
+#: templates/products/pre_confirm.html:127
+msgid "Confirm Order"
+msgstr "تأكيد الطلب"
+
+#: templates/products/pre_confirm.html:145
+msgid "Unit price"
+msgstr "سعر الوحدة"
+
+#: templates/products/pre_confirm.html:146
+msgid "Quantity ordered"
+msgstr "الكمية المطلوبة"
+
+#: templates/products/pre_confirm.html:148
+msgid "Availability"
+msgstr "التوفر"
+
+#: templates/products/pre_confirm.html:153
+msgid "Remaining stock"
+msgstr "المخزون المتبقي"
+
+#: templates/products/pre_confirm.html:153
+msgid "units"
+msgstr "قطع"
+
+#: templates/products/pre_confirm.html:158
+msgid "Order Summary"
+msgstr "ملخص الطلب"
+
+#: templates/products/pre_confirm.html:161
+msgid "Unit Price"
+msgstr "سعر الوحدة"
+
+#: templates/products/pre_confirm.html:174
+msgid "Confirm & Place Order"
+msgstr "تأكيد وإتمام الطلب"
+
+#: templates/products/pre_confirm.html:181
+msgid "Back to Product"
+msgstr "العودة للمنتج"
+
+#: templates/products/pre_confirm.html:185
+msgid "We'll call you to confirm delivery"
+msgstr "سنتصل بك لتأكيد التوصيل"
+
+#: templates/products/product_details.html:292
+msgid "No image available"
+msgstr "لا توجد صورة متاحة"
+
+#: templates/products/product_details.html:328
+msgid "units left"
+msgstr "قطع متبقية"
+
+#: templates/products/product_details.html:339
+msgid "Description"
+msgstr "الوصف"
+
+#: templates/products/product_details.html:346
+msgid "Added"
+msgstr "تاريخ الإضافة"
+
+#: templates/products/product_details.html:352
+msgid "Place Your Order"
+msgstr "إتمام طلبك"
+
+#: templates/products/product_details.html:360
+msgid "max"
+msgstr "أقصى كمية"
+
+#: templates/products/product_details.html:364
+msgid "Buy Now"
+msgstr "اشتري الآن"
+
+#: templates/products/product_details.html:369
+msgid "We will call you to confirm your order"
+msgstr "سنتصل بك لتأكيد طلبك"
+
+#: templates/products/product_details.html:374
+msgid "Unavailable"
+msgstr "غير متوفر"
+
+#: templates/products/product_details.html:376
+msgid "Currently Out of Stock"
+msgstr "غير متوفر حالياً"
+
+#: templates/products/search.html:165
+#, python-format
+msgid "Results for <em>\"%(query)s\"</em>"
+msgstr "نتائج البحث عن <em>\"%(query)s\"</em>"
+
+#: templates/products/search.html:167
+msgid "Search Products"
+msgstr "البحث عن المنتجات"
+
+#: templates/products/search.html:177
+msgid "Phones, cables, earbuds, power banks…"
+msgstr "هواتف، كابلات، سماعات، باور بانك..."
+
+#: templates/products/search.html:191
+msgid "Found <strong>%(count)s</strong> result%(count|pluralize)s for <strong>\"%(query)s\"</strong>"
+msgstr "تم العثور على <strong>%(count)s</strong> نتيجة لـ <strong>\"%(query)s\"</strong>"
+
+#: templates/products/search.html:233
+#, python-format
+msgid "No results for \"%(query)s\""
+msgstr "لا توجد نتائج لـ \"%(query)s\""
+
+#: templates/products/search.html:234
+msgid "We couldn't find anything matching your search. Try a different keyword."
+msgstr "لم نجد ما يطابق بحثك. حاول استخدام كلمة مفتاحية مختلفة."
+
+#: templates/products/search.html:236 templates/products/search.html:249
+msgid "Cable"
+msgstr "كابل"
+
+#: templates/products/search.html:237 templates/products/search.html:250 templates/users/profile.html:189
+msgid "Phone"
+msgstr "هاتف"
+
+#: templates/products/search.html:238 templates/products/search.html:251
+msgid "Earbuds"
+msgstr "سماعات"
+
+#: templates/products/search.html:239 templates/products/search.html:252
+msgid "Power Bank"
+msgstr "باور بانك"
+
+#: templates/products/search.html:246
+msgid "What are you looking for?"
+msgstr "عما تبحث؟"
+
+#: templates/products/search.html:247
+msgid "Search through our collection of phones, accessories, cables, and more."
+msgstr "ابحث في مجموعتنا من الهواتف، الإكسسوارات، الكابلات، والمزيد."
+
+#: templates/users/edit_profile.html:3
+msgid "Edit Profile — Ezzat Store"
+msgstr "تعديل الملف الشخصي — متجر عزت"
+
+#: templates/users/edit_profile.html:140
+msgid "Back to Profile"
+msgstr "الرجوع لملفي الشخصي"
+
+#: templates/users/edit_profile.html:151
+msgid "Personal Info"
+msgstr "المعلومات الشخصية"
+
+#: templates/users/edit_profile.html:152
+msgid "Update your username, email, and phone"
+msgstr "تحديث اسم المستخدم، البريد الإلكتروني والهاتف"
+
+#: templates/users/edit_profile.html:161
+msgid "Save Changes"
+msgstr "حفظ التغييرات"
+
+#: templates/users/edit_profile.html:172
+msgid "Change Password"
+msgstr "تغيير كلمة المرور"
+
+#: templates/users/edit_profile.html:173
+msgid "Choose a strong, secure password"
+msgstr "اختر كلمة مرور قوية وآمنة"
+
+#: templates/users/edit_profile.html:182
+msgid "Update Password"
+msgstr "تحديث كلمة المرور"
+
+#: templates/users/profile.html:3
+msgid "My Profile — Ezzat Store"
+msgstr "ملفي الشخصي — متجر عزت"
+
+#: templates/users/profile.html:184
+msgid "Username"
+msgstr "اسم المستخدم"
+
+#: templates/users/profile.html:195
+msgid "WhatsApp"
+msgstr "واتساب"
+
+#: templates/users/profile.html:201
+msgid "Orders"
+msgstr "الطلبات"
+
+#: templates/users/profile.html:224
+#, python-format
+msgid ""
+"\n"
+"                %(count)s order\n"
+"              "
+msgid_plural ""
+"\n"
+"                %(count)s orders\n"
+"              "
+msgstr[0] ""
+"\n"
+"                لا توجد طلبات\n"
+"              "
+msgstr[1] ""
+"\n"
+"                طلب واحد\n"
+"              "
+msgstr[2] ""
+"\n"
+"                طلبان\n"
+"              "
+msgstr[3] ""
+"\n"
+"                %(count)s طلبات\n"
+"              "
+msgstr[4] ""
+"\n"
+"                %(count)s طلباً\n"
+"              "
+msgstr[5] ""
+"\n"
+"                %(count)s طلب\n"
+"              "
+
+#: templates/users/profile.html:254
+msgid "Qty:"
+msgstr "الكمية:"
+
+#: templates/users/profile.html:279
+msgid "Cancel Order"
+msgstr "إلغاء الطلب"
+
+#: templates/users/profile.html:291
+msgid "No orders yet"
+msgstr "لا توجد طلبات بعد"
+
+#: templates/users/profile.html:292
+msgid "You haven't placed any orders. Start shopping!"
+msgstr "لم تقم بإجراء أي طلبات حتى الآن. ابدأ التسوق الآن!"
+
+#: templates/users/profile.html:294
+msgid "Browse Products"
+msgstr "تصفح المنتجات"

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Cancel Order — Ezzat Store" %}{% endblock %}
+
+{% block extra_css %}
+.cancel-page {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.cancel-box {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 40px 36px;
+  max-width: 460px;
+  width: 100%;
+  text-align: center;
+}
+.cancel-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.25);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 26px;
+  color: var(--danger);
+}
+.cancel-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 22px;
+  color: var(--txt); margin-bottom: 10px;
+}
+.cancel-sub {
+  font-size: 14px; color: var(--txt-2);
+  line-height: 1.6; margin-bottom: 10px;
+}
+.order-info {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 12px 16px;
+  margin: 20px 0 28px;
+  text-align: left;
+}
+.order-info p { font-size: 13px; color: var(--txt-2); margin: 0; }
+.order-info p strong { color: var(--txt); }
+.cancel-actions { display: flex; flex-direction: column; gap: 10px; }
+@media (min-width: 400px) { .cancel-actions { flex-direction: row; } }
+.cancel-actions form { flex: 1; }
+.cancel-actions button { width: 100%; }
+{% endblock %}
+
+{% block content %}
+<div class="cancel-page">
+  <div class="cancel-box">
+
+    <div class="cancel-icon"><i class="fas fa-trash-can"></i></div>
+    <h1 class="cancel-title">{% trans "Cancel Order?" %}</h1>
+    <p class="cancel-sub">{% trans "This action will cancel your order and return the item to stock. Are you sure?" %}</p>
+
+    {% if order %}
+    <div class="order-info">
+      <p><strong>{% trans "Order" %} #{{ order.id }}</strong> — {{ order.product }}</p>
+      <p>{% trans "Qty" %}: <strong>{{ order.quantity }}</strong> &nbsp;·&nbsp; {% trans "Total" %}: <strong>{{ order.total_price }} {% trans "EGP" %}</strong></p>
+    </div>
+    {% endif %}
+
+    <div class="cancel-actions">
+      <form method="post" action="{% url 'orders:cancel_order' %}">
+        {% csrf_token %}
+        <input type="hidden" name="order_id" value="{{ order.id }}">
+        <button type="submit" class="btn btn-danger" style="padding:11px 20px;font-size:14px;">
+          <i class="fas fa-trash-can"></i> {% trans "Yes, Cancel" %}
+        </button>
+      </form>
+      <form method="post" action="{% url 'profile' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-ghost" style="padding:11px 20px;font-size:14px;">
+          <i class="fas fa-arrow-left"></i> {% trans "Go Back" %}
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
