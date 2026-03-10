@@ -182,15 +182,11 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.getenv('CLOUDINARY_API_SECRET')
 }
 
-# نظام التخزين الحديث لـ Django 6.0
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
-
-# السطر المطلوب لتوافق المكتبة مع Django 6.0
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
