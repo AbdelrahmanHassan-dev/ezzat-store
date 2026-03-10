@@ -142,7 +142,8 @@
         <div class="recap-body">
           <h2 class="recap-name">{{ product.name_product }}</h2>
           <p class="recap-desc">{{ product.description }}</p>
-          <div class="recap-row"><span class="k">{% trans "Unit price" %}</span><span class="v">{{ product.price }} {% trans "EGP" %}</span></div>
+          <!-- <div class="recap-row"><span class="k">{% trans "Unit price" %}</span><span class="v">{{ product.price }} {% trans "EGP" %}</span></div> -->
+          <div class="recap-row"><span class="k">{% trans "Unit price" %}</span><span class="v">{{ product.price|add:"0"|stringformat:"f"|slice:":-7" }} {% trans "EGP" %}</span></div>
           <div class="recap-row"><span class="k">{% trans "Quantity ordered" %}</span><span class="v">{{ quantity }}</span></div>
           <div class="recap-row">
             <span class="k">{% trans "Availability" %}</span>
@@ -158,12 +159,14 @@
         <h2><i class="fas fa-receipt"></i> {% trans "Order Summary" %}</h2>
 
         <div class="sum-row"><span class="k">{% trans "Product" %}</span><span class="v">{{ product.name_product }}</span></div>
-        <div class="sum-row"><span class="k">{% trans "Unit Price" %}</span><span class="v">{{ product.price }} {% trans "EGP" %}</span></div>
+        <!-- <div class="sum-row"><span class="k">{% trans "Unit Price" %}</span><span class="v">{{ product.price }} {% trans "EGP" %}</span></div> -->
+        <div class="sum-row"><span class="k">{% trans "Unit Price" %}</span><span class="v">{{ product.price|add:"0"|stringformat:"f"|slice:":-7" }} {% trans "EGP" %}</span></div>
         <div class="sum-row"><span class="k">{% trans "Quantity" %}</span><span class="v">× {{ quantity }}</span></div>
 
         <div class="sum-total">
           <span class="k">{% trans "Total" %}</span>
-          <span class="v">{{ amount }}<span>{% trans "EGP" %}</span></span>
+          <!-- <span class="v">{{ amount }}<span>{% trans "EGP" %}</span></span> -->
+          <span class="v">{{ amount|add:"0"|stringformat:"f"|slice:":-7" }}<span>{% trans "EGP" %}</span></span>
         </div>
 
         <form action="{% url 'saving_order_sessions' %}" method="post">

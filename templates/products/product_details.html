@@ -330,7 +330,8 @@
           </div>
 
           <div class="price-row">
-            <span class="price-main">{{ product.price }}</span>
+            <!-- <span class="price-main">{{ product.price }}</span> -->
+            <span class="price-main">{{ product.price|add:"0"|stringformat:"f"|slice:":-7" }}</span>
             <span class="price-currency">{% trans "EGP" %}</span>
           </div>
         </div>

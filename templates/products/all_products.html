@@ -278,9 +278,13 @@
             </a>
             <p class="card-desc">{{ product.description }}</p>
             <div class="card-meta">
-              <div class="card-price">
+              <!-- <div class="card-price">
                 {{ product.price }}<span class="currency">{% trans "EGP" %}</span>
+              </div> -->
+              <div class="card-price">
+                {{ product.price|add:"0"|stringformat:"f"|slice:":-7" }}<span class="currency">{% trans "EGP" %}</span>
               </div>
+
               <div class="card-stock">
                 {% trans "Stock" %}: <strong>{{ product.stock }}</strong>
               </div>

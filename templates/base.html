@@ -2,11 +2,12 @@
 {% get_current_language as LANGUAGE_CODE %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" data-theme="dark">
+<!-- <html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" data-theme="dark"> -->
+<html lang="{{ LANGUAGE_CODE }}" dir="ltr" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}Ezzat Store{% endblock %}</title>
+  <title>{% block title %}ABL Store{% endblock %}</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -417,7 +418,7 @@
 
       <a href="{% url 'all_products' %}" class="logo">
         <div class="logo-icon">E</div>
-        <span class="logo-name">EZZA<em>T</em></span>
+        <span class="logo-name">AB<em>L</em></span>
       </a>
 
       <div class="nav-search">
@@ -495,7 +496,7 @@
     <div class="drawer-top">
       <a href="{% url 'all_products' %}" class="logo" onclick="closeDrawer()">
         <div class="logo-icon">E</div>
-        <span class="logo-name">EZZA<em>T</em></span>
+        <span class="logo-name">AB<em>L</em></span>
       </a>
       <button class="icon-btn" onclick="closeDrawer()"><i class="fas fa-times"></i></button>
     </div>
@@ -540,7 +541,7 @@
           <i id="themeIcoD" class="fas fa-moon"></i>
         </button>
       </div>
-      <p style="font-size:11px;color:var(--txt-3);">© 2026 {% trans "Ezzat Store" %}</p>
+      <p style="font-size:11px;color:var(--txt-3);">© 2026 {% trans "ABL Store" %}</p>
     </div>
   </div>
 
@@ -583,13 +584,13 @@
       <div class="footer-about">
         <a href="{% url 'all_products' %}" class="logo">
           <div class="logo-icon">E</div>
-          <span class="logo-name">EZZA<em>T</em></span>
+          <span class="logo-name">AB<em>L</em></span>
         </a>
         <p class="footer-desc">{% trans "Your destination for electronics and gadgets in Egypt. Phones, accessories, cables, earbuds, and more." %}</p>
         <div class="socials">
           <a href="https://www.facebook.com/mahmoud.ezaat.15919" class="social" target="_blank"><i class="fab fa-facebook-f"></i></a>   
           <!-- <a href="#" class="social"><i class="fab fa-instagram"></i></a> -->
-          <a href="https://wa.me/2011142510" class="social" target="_blank"><i class="fab fa-whatsapp"></i></a>   
+          <a href="https://wa.me/201101538980" class="social" target="_blank"><i class="fab fa-whatsapp"></i></a>   
           <!-- <a href="#" class="social"><i class="fab fa-tiktok"></i></a> -->
         </div>
       </div>
@@ -614,7 +615,7 @@
       </div>
     </div>
     <div class="footer-bar">
-      <p>© 2026 <a href="{% url 'all_products' %}">{% trans "Ezzat Store" %}</a></p>
+      <p>© 2026 <a href="{% url 'all_products' %}">{% trans "ABL Store" %}</a></p>
       <p><a href="https://github.com/AbdelrahmanHassan-dev/">{% trans "Web made by Abdelrahman Mohamed" %}</a> . +201119973724 <a href="mailto:abdelrahmanxmohamed@gmail.com">Send Email: abdelrahmanxmohamed@gmail.com</a></p>
       <div class="payment-tags">
         <!-- <span class="ptag">{% trans "VISA" %}</span>
