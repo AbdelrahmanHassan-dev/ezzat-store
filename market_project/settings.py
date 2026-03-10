@@ -39,9 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
     'django.contrib.staticfiles',
-    'cloudinary',
     'phonenumber_field',
     'users.apps.UsersConfig',
     'products.apps.ProductsConfig',
@@ -166,14 +164,3 @@ MESSAGE_TAGS = {
 
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dmrwqxiro',
-    'API_KEY': '886322713461892',
-    'API_SECRET': '**********'
-}
-
-# هذا السطر يخبر Django أن أي ملف يرفعه الـ Admin يذهب للسحابة
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
