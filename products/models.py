@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import CustomUser
 from django.utils import timezone
+from cloudinary.models import CloudinaryField
 
 
 
@@ -19,7 +20,8 @@ class Product(models.Model):
 
 class Product_images(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE, related_name='image')
-    image= models.ImageField(upload_to="images/%Y/%m/%d/")
+    # image= models.ImageField(upload_to="images/%Y/%m/%d/")
+    image = CloudinaryField('image')
 
 
 class Comment(models.Model):

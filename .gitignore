@@ -14,4 +14,5 @@ __pycache__/
 db.sqlite3
 
 # تجاهل ملفات النظام
-.DS_Store
+.DS_Storestaticfiles/
+staticfiles/
