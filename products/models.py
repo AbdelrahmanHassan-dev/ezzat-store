@@ -7,7 +7,7 @@ from django.utils import timezone
 class Product(models.Model):
     name_product = models.CharField(max_length=50)
     description = models.TextField()
-    price=models.DecimalField(max_digits=7, decimal_places=3)
+    price=models.DecimalField(max_digits=10, decimal_places=3)
     date_adding= models.DateField(auto_now_add=True)
     is_available = models.BooleanField()
     stock = models.PositiveIntegerField()
