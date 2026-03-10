@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary',
     'phonenumber_field',
     'users.apps.UsersConfig',
     'products.apps.ProductsConfig',
@@ -164,3 +166,31 @@ MESSAGE_TAGS = {
 
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
+
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': 'dmrwqxiro',
+#     'API_KEY': '886322713461892',
+#     'API_SECRET': '**********'
+# }
+
+# إعدادات Cloudinary مع جلب السر من متغيرات البيئة
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dmrwqxiro',
+    'API_KEY': '886322713461892',
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET')
+}
+
+# نظام التخزين الحديث لـ Django 6.0
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+# السطر المطلوب لتوافق المكتبة مع Django 6.0
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
