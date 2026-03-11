@@ -5,7 +5,7 @@ from django.utils.html import format_html
 from orders.models import Order
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['user','product','quantity','total_price','status','user_phone','his_whatsapp','created_at']
+    list_display = ['user','product','quantity','total_price','status','user_phone','his_whatsapp','created_at','pickup_location','city_choices']
     list_editable = ['status', 'quantity']
     list_filter = ['status','created_at']
     search_fields = ['user__username','product__name_product']

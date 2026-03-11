@@ -4,7 +4,13 @@
 
 {% block extra_css %}
 .preconfirm-page { padding: 36px 0 64px; }
-
+.v.location-tag {
+  color: var(--accent);
+  background: var(--accent-bg);
+  padding: 2px 8px;
+  border-radius: var(--r);
+  font-size: 12px;
+}
 .breadcrumb {
   display: flex; align-items: center; gap: 6px;
   font-size: 12px; color: var(--txt-3); margin-bottom: 28px;
@@ -154,30 +160,39 @@
           <div class="recap-row"><span class="k">{% trans "Remaining stock" %}</span><span class="v">{{ product.stock }} {% trans "units" %}</span></div>
         </div>
       </div>
-
       <div class="summary-panel">
         <h2><i class="fas fa-receipt"></i> {% trans "Order Summary" %}</h2>
 
         <div class="sum-row"><span class="k">{% trans "Product" %}</span><span class="v">{{ product.name_product }}</span></div>
-        <!-- <div class="sum-row"><span class="k">{% trans "Unit Price" %}</span><span class="v">{{ product.price }} {% trans "EGP" %}</span></div> -->
         <div class="sum-row"><span class="k">{% trans "Unit Price" %}</span><span class="v">{{ product.price|add:"0"|stringformat:"f"|slice:":-7" }} {% trans "EGP" %}</span></div>
         <div class="sum-row"><span class="k">{% trans "Quantity" %}</span><span class="v">× {{ quantity }}</span></div>
-
-        <div class="sum-total">
-          <span class="k">{% trans "Total" %}</span>
-          <!-- <span class="v">{{ amount }}<span>{% trans "EGP" %}</span></span> -->
-          <span class="v">{{ amount|add:"0"|stringformat:"f"|slice:":-7" }}<span>{% trans "EGP" %}</span></span>
+        
+        <div class="sum-row">
+          <span class="k"><i class="fas fa-city" style="margin-right: 5px;"></i> {% trans "City" %}</span>
+          <span class="v">{{ city_choices }}</span>
         </div>
-
+        <div class="sum-row">
+          <span class="k"><i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i> {% trans "Pickup Location" %}</span>
+          <span class="v location-tag">{{ pickup_location }}</span>
+        </div>
+        
         <form action="{% url 'saving_order_sessions' %}" method="post">
           {% csrf_token %}
           <input type="hidden" name="quantity" value="{{ quantity }}">
           <input type="hidden" name="id" value="{{ product.id }}">
+          <input type="hidden" name="pickup_location" value="{{ pickup_location }}">
+          <input type="hidden" name="city_choices" value="{{ city_choices }}">
+
+          <div class="sum-total">
+            <span class="k">{% trans "Total" %}</span>
+            <span class="v">{{ amount|add:"0"|stringformat:"f"|slice:":-7" }}<span>{% trans "EGP" %}</span></span>
+          </div>
+
           <button type="submit" class="confirm-btn">
             <i class="fas fa-bolt"></i> {% trans "Confirm & Place Order" %}
           </button>
         </form>
-
+        
         <form method="post" action="{% url 'product_details' id=product.id %}">
           {% csrf_token %}
           <button type="submit" class="back-btn">
@@ -187,7 +202,6 @@
 
         <p class="sum-note"><i class="fas fa-phone"></i> {% trans "We'll call you to confirm delivery" %}</p>
       </div>
-
     </div>
   </div>
 </div>

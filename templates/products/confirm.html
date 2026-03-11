@@ -82,13 +82,28 @@
         <span class="label-txt">{% trans "Product" %}</span>
         <span class="value-txt">{{ order.product.name_product }}</span>
       </div>
+      
       <div class="summary-row">
         <span class="label-txt">{% trans "Quantity" %}</span>
         <span class="value-txt">{{ order.quantity }}</span>
       </div>
+
       <div class="summary-sep"></div>
+
+      <div class="summary-row">
+        <span class="label-txt"><i class="fas fa-city" style="font-size: 11px; margin-right: 4px;"></i> {% trans "City" %}</span>
+        <span class="value-txt">{{ order.city_choices }}</span>
+      </div>
+
+      <div class="summary-row">
+        <span class="label-txt"><i class="fas fa-map-marker-alt" style="font-size: 11px; margin-right: 4px;"></i> {% trans "Address" %}</span>
+        <span class="value-txt" style="color: var(--accent);">{{ order.pickup_location }}</span>
+      </div>
+
+      <div class="summary-sep"></div>
+      
       <div class="summary-row total">
-        <span class="label-txt">{% trans "Total" %}</span>
+        <span class="label-txt">{% trans "Total Amount" %}</span>
         <span class="value-txt">{{ order.total_price }} {% trans "EGP" %}</span>
       </div>
     </div>

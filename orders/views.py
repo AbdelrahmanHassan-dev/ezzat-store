@@ -16,17 +16,20 @@ def confirm(request):
 
     product_id = request.session.get('product_id')
     quantity = request.session.get('quantity',1)
+    pickup_location = request.session.get('pickup_location')
+    city_choices = request.session.get('city_choices')
     if not product_id:
         return redirect('all_products')
     product = get_object_or_404(Product,id=product_id)
     if int(quantity) > int(product.stock):
         messages.error(request,"Requested quantity exceeds stock.")
         return redirect('product_details',id=product_id)
-    
     order = Order.objects.create(
         user = request.user,
         product= product,
-        quantity = quantity
+        quantity = quantity,
+        pickup_location=pickup_location,
+        city_choices=city_choices
     )
 
 
@@ -45,17 +48,25 @@ def confirm(request):
 def pre_confirm(request):
     product_id = None
     quantity = None
+    pickup_location = None
+    city_choices=None
     if request.method == "POST":
         product_id = request.POST.get('id')
         quantity = request.POST.get('quantity')
+        pickup_location = request.POST.get('pickup_location')
+        city_choices = request.POST.get('city_choices')
     if not product_id:
         product_id = request.session.get('product_id')
     if not quantity:
         quantity = request.session.get('quantity',1)
+    if not pickup_location:
+        pickup_location = request.session.get('pickup_location')
+    if not city_choices:
+        city_choices= request.session.get('city_choices')
     product =get_object_or_404(Product,id=product_id)
     
     amount = float(quantity)*float(product.price)
-
+    # city_choices= Order.EGYPT_GOVERNORATES
     try :
         quantity = int(quantity)
         if quantity < 1:
@@ -69,7 +80,7 @@ def pre_confirm(request):
     except ValueError:
         messages.error(request,"the quantity have to be INT")
         return render(request,'products/product_details.html',{'product':product})
-    return render(request,'products/pre_confirm.html',{'amount':amount,'quantity':quantity,'product':product})
+    return render(request,'products/pre_confirm.html',{'amount':amount,'quantity':quantity,'product':product,'pickup_location':pickup_location,'city_choices':city_choices})
 
 @login_required
 def cancel_order(request):
