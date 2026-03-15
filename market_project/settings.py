@@ -30,7 +30,8 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 # DEBUG = False
 
 ALLOWED_HOSTS = ['*']
-
+# سيقرأ من Railway إذا وجد المتغير، وإذا لم يجده سيترك القائمة فارغة ولن يسبب خطأ
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if os.getenv("CSRF_TRUSTED_ORIGINS") else []
 
 # Application definition
 
